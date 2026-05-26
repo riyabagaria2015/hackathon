@@ -37,6 +37,35 @@ uv run python src/day2_compliant_agent.py --mock
 
 **Alternatives (not wired in this repo):** [instructor](https://github.com/jxnl/instructor) or [outlines](https://github.com/dottxt-ai/outlines) on top of Ollama for heavier schema enforcement; **llama-cpp-python** + **GBNF** grammars for strict JSON without a separate daemon—handy when you want token-level control inside one process.
 
+## Day 3 — Gradio streaming UI & stateful sessions
+
+**`gr.State`** holds the list of **active characters** plus the **chat message list** fed to **`gr.Chatbot`** (each item is `{"role": "...", "content": "..."}`). Three buttons (**Trigger Alice / Bob / Charlie**) each run a **generator** that **yields** after every word so the UI streams.
+
+**Cutting in mid-stream:** a shared **stream epoch** counter is bumped whenever a new actor starts; the running generator checks it on every iteration. **`demo.queue(default_concurrency_limit=20)`** lets another button’s handler start while the first stream is between yields (so the UI does not have to wait for Alice to finish). Stopped bubbles append a short *“stream cut”* suffix.
+
+### How to use the UI
+
+1. **Install & run** (from the repo root):
+
+   ```bash
+   uv run python src/day3_streaming_ui.py
+   ```
+
+2. **Open the app** in your browser: [http://127.0.0.1:7860](http://127.0.0.1:7860)  
+   If that port is busy, stop the other process or change `server_port` in `src/day3_streaming_ui.py`.
+
+3. **Trigger an actor** — click **Trigger Alice**, **Trigger Bob**, or **Trigger Charlie**.  
+   A new assistant bubble appears and **streams word by word** in the chat transcript.
+
+4. **Interrupt / hand off** — while one actor is still streaming, click **another** actor.  
+   The first stream should stop (with a *stream cut* note) and the new actor’s bubble should start.
+
+5. **Clear** — **Clear scene** wipes the chat and stops any in-flight stream.
+
+**If buttons error after editing the code:** stop the server (**Ctrl+C**), save the file, and run the `uv run` command again so Gradio reloads the layout.
+
+**Implementation note:** `gr.State` must be created **inside** `with gr.Blocks():`. If it is created outside, Gradio raises `KeyError` on clicks when resolving session state.
+
 ## Other
 
 ```bash

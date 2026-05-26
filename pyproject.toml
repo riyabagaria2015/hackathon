@@ -1,10 +1,11 @@
 [project]
 name = "hackathon"
 version = "0.1.0"
-description = "Hackathon: Day 1 asyncio interruption demo; Day 2 Ollama + Pydantic streaming agent."
+description = "Hackathon: Day 1 asyncio interruption; Day 2 Ollama + Pydantic; Day 3 Gradio multi-actor streaming UI."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "gradio>=6",
     "ollama>=0.6.2",
     "pydantic>=2.13.4",
 ]
