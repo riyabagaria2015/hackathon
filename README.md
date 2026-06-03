@@ -66,6 +66,25 @@ uv run python src/day2_compliant_agent.py --mock
 
 **Implementation note:** `gr.State` must be created **inside** `with gr.Blocks():`. If it is created outside, Gradio raises `KeyError` on clicks when resolving session state.
 
+## Day 4 — Graph-based Director (table read)
+
+A **Director** runs a **5-beat** “heartbeat” loop: each beat cues **Alice** to stream a line while **Bob** and **Charlie** (in parallel) evaluate her **partial** transcript as JSON (`ObserverTurn`: same contract as Day 2). If either returns **INTERRUPT**, the Director **programmatically** cuts Alice and streams the winner’s line (Bob wins ties). Rendered live in **Gradio** on **port 7861** (Day 3 can keep 7860).
+
+### How to run Day 4
+
+```bash
+uv run python src/day4_table_read.py
+```
+
+Open **http://127.0.0.1:7861**.
+
+1. **Default: real LLM** — leave **Mock evaluators** **unchecked**. Ensure **`ollama serve`** is running and run **`ollama pull <model>`** for the model in the textbox (defaults to `OLLAMA_MODEL` or `llama3.2`). Optional: set **`OLLAMA_HOST`** if the daemon is not on localhost.
+2. Click **Start 5-turn table read** and watch the chat stream. On **beat 3**, Bob and Charlie are polled **every Alice word** so they see “cooked the books” in context; when either returns **INTERRUPT**, the Director cuts Alice and streams the winner’s line.
+3. **Mock evaluators** — check the box only for a fully offline run (deterministic INTERRUPT on beat 3, no network).
+4. **Reset** clears the transcript and session counters.
+
+If Ollama is unreachable, the UI shows an error status and stops instead of silently falling back to mock.
+
 ## Other
 
 ```bash

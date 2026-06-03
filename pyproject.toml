@@ -1,7 +1,7 @@
 [project]
 name = "hackathon"
 version = "0.1.0"
-description = "Hackathon: Day 1 asyncio interruption; Day 2 Ollama + Pydantic; Day 3 Gradio multi-actor streaming UI."
+description = "Hackathon: Days 1–4 — asyncio, Ollama+Pydantic, Gradio streaming, Director table read."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
