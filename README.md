@@ -85,6 +85,17 @@ Open **http://127.0.0.1:7861**.
 
 If Ollama is unreachable, the UI shows an error status and stops instead of silently falling back to mock.
 
+## Day 5 — AI Puppet Theater (Gradio)
+
+Stateful **AI Puppet Theater With Tiny Actors**: Backstage setup, curtain + chime, then **Play** with **Ollama**-generated dialogue (transcript-aware turns) or offline lines. Main Stage has **Use Ollama** + model name; interruptions only after several clauses so Actor 3 gets the floor. Wire HF TTS via `attach_hf_clients()` / `tts_synthesize`.
+
+```bash
+ollama serve   # elsewhere: ollama pull llama3.2
+uv run python src/day5_puppet_theater.py
+```
+
+Open **http://127.0.0.1:7862**. **Spoken clauses** use [edge-tts](https://github.com/rany2/edge-tts) (neural MP3, needs internet); optional `EDGE_TTS_VOICE`, `EDGE_TTS_VOICE_DEEP`, `EDGE_TTS_VOICE_NERVOUS`, `EDGE_TTS_VOICE_ROBOT`. Also: `OLLAMA_HOST`, `OLLAMA_MODEL`, and `pip install huggingface_hub` for `InferenceClient`.
+
 ## Other
 
 ```bash
