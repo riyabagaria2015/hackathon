@@ -479,10 +479,52 @@ def tts_synthesize(client: Any | None, text: str, voice_label: str) -> str:
 # --- UI rendering ---
 
 THEATER_CSS = """
-.gradio-container { background: radial-gradient(1200px 800px at 50% 0%, #2a1020 0%, #0c0608 55%, #050308 100%) !important; }
-.gr-block.gr-form { background: rgba(18, 6, 12, 0.92) !important; border: 1px solid #4a1a2a !important; border-radius: 12px !important; }
-footer {opacity: 0.35;}
-#curtain-root { min-height: 220px; border-radius: 10px; overflow: hidden; position: relative; }
+.gradio-container {
+  background: radial-gradient(1400px 900px at 50% -10%, #3a1528 0%, #12080e 45%, #060306 100%) !important;
+  max-width: 1120px !important;
+  margin: 0 auto !important;
+}
+footer { opacity: 0.3; }
+.theater-hero {
+  text-align: center;
+  padding: 1.25rem 1rem 1.5rem;
+  margin-bottom: 0.5rem;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(45,18,32,0.55) 0%, rgba(12,6,10,0.2) 100%);
+  border: 1px solid rgba(180, 120, 140, 0.2);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+}
+.theater-hero h2 { margin-bottom: 0.35rem; color: #fce8ef !important; letter-spacing: 0.02em; }
+.theater-hero p, .theater-hero li { color: #d4b8c4 !important; font-size: 0.95rem; line-height: 1.55; }
+.theater-tabs { margin-top: 0.5rem; }
+.theater-tabs .tab-nav button { font-weight: 600; letter-spacing: 0.03em; }
+.theater-card {
+  padding: 0.75rem 1rem 1rem !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(90, 40, 65, 0.45) !important;
+  background: rgba(16, 8, 14, 0.55) !important;
+  margin-bottom: 0.75rem !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.theater-card h3 { color: #f0d4e0 !important; margin-top: 0.25rem !important; }
+.theater-stage-shell {
+  border-radius: 16px;
+  padding: 0.5rem;
+  background: linear-gradient(145deg, rgba(30,12,22,0.9), rgba(8,4,8,0.95));
+  border: 1px solid rgba(120, 60, 90, 0.35);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+.theater-control-deck .gr-form { gap: 0.5rem; }
+.theater-control-deck button { min-width: 5.5rem; }
+.theater-llm-hint { font-size: 0.88rem !important; color: #b898a8 !important; margin: 0.35rem 0 0.5rem !important; }
+.gr-block.gr-form { background: rgba(18, 6, 12, 0.88) !important; border: 1px solid rgba(74, 26, 42, 0.55) !important; border-radius: 12px !important; }
+#curtain-root {
+  min-height: 200px;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45), inset 0 0 0 1px rgba(255,200,120,0.08);
+}
 .curtain-panel {
   position: absolute; inset: 0; display: flex; pointer-events: none;
 }
@@ -498,31 +540,71 @@ footer {opacity: 0.35;}
 .curtain-raised .curtain-half.left { transform: translateY(-100%); }
 .curtain-raised .curtain-half.right { transform: translateY(-100%); }
 #stage-wrap {
-  padding: 16px; border-radius: 12px; border: 1px solid #3d1530; background: rgba(10,4,8,0.92);
-  display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 18px;
+  padding: 20px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(90, 45, 70, 0.5);
+  background: radial-gradient(ellipse at 50% 0%, rgba(40, 16, 28, 0.95) 0%, rgba(10, 4, 8, 0.98) 70%);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
 }
 .actor-card {
-  display: flex; flex-direction: column; align-items: center; flex: 1 1 200px;
-  max-width: 32%; min-width: 170px; text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 200px;
+  max-width: 32%;
+  min-width: 170px;
+  text-align: center;
 }
 .bubble {
-  min-height: 72px; padding: 10px 12px; border-radius: 14px;
-  background: #1a0d14; border: 1px solid #5c2a44; color: #f4e6ef;
-  font-size: 0.95rem; line-height: 1.35; margin-bottom: 10px; width: 100%;
-  box-shadow: 0 6px 24px rgba(0,0,0,0.45);
+  min-height: 76px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: linear-gradient(165deg, #221018 0%, #140c12 100%);
+  border: 1px solid rgba(120, 70, 95, 0.45);
+  color: #f8ecf2;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin-bottom: 12px;
+  width: 100%;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
 }
-.bubble.dim { opacity: 0.5; filter: grayscale(0.2); }
+.bubble.dim { opacity: 0.48; filter: grayscale(0.15); }
 .avatar {
-  font-size: 2.4rem; border-radius: 50%; padding: 10px;
-  border: 3px solid #3a1a2a; background: rgba(40,10,30,0.6);
-  transition: box-shadow 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  font-size: 2.5rem;
+  border-radius: 50%;
+  padding: 12px;
+  border: 3px solid rgba(58, 26, 42, 0.9);
+  background: radial-gradient(circle at 30% 20%, rgba(70, 28, 48, 0.7), rgba(24, 8, 16, 0.9));
+  transition: box-shadow 0.28s ease, border-color 0.28s ease, transform 0.28s ease;
 }
 .avatar.speaking {
-  border-color: #ffd66b;
-  box-shadow: 0 0 22px rgba(255, 200, 120, 0.85), 0 0 42px rgba(255, 120, 80, 0.35);
-  transform: scale(1.05);
+  border-color: #e8b060;
+  box-shadow: 0 0 24px rgba(255, 200, 120, 0.75), 0 0 48px rgba(200, 80, 60, 0.25);
+  transform: scale(1.06);
 }
-.actor-label { font-size: 0.75rem; color: #cfa7bc; margin-top: 6px; }
+.actor-label { font-size: 0.72rem; color: #c9a3b8; margin-top: 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+/*
+ * Visually hide the Gradio audio chrome but keep the block in layout.
+ * Do NOT use display:none — browsers often skip autoplay for unrendered <audio>.
+ */
+.theater-audio-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 """
 
 THEATER_THEME = gr.themes.Soft(
@@ -535,6 +617,10 @@ THEATER_THEME = gr.themes.Soft(
     block_background_fill_dark="#140a10",
     block_border_width="1px",
     block_label_text_size="md",
+    block_radius="lg",
+    button_large_radius="12px",
+    button_small_radius="10px",
+    shadow_drop="0 4px 16px rgba(0,0,0,0.35)",
 )
 
 
@@ -1046,39 +1132,43 @@ def build_app() -> gr.Blocks:
         session_state = gr.State(initial_session())
 
         gr.Markdown(
-            "## AI Puppet Theater — *Tiny Actors, Human-Like Streaming*\n"
-            "Configure **Backstage**, then **Raise Curtain** for the curtain animation plus intro chime. "
-            "On **Main Stage**, set **Ollama** (or use offline lines), then **Play** for LLM dialogue + TTS placeholders. "
-            "**Pause** / **Resume** / **Stop** control the loop; **Reset** clears scene state."
+            "## AI Puppet Theater\n"
+            "### *Tiny actors. Live dialogue. Voices in the room — no on-screen player.*\n\n"
+            "Use **Backstage** to set the scene, then **Raise Curtain**. On **Main Stage**, run **Play**; "
+            "speech is generated as text and **plays automatically in the background** (edge-tts). "
+            "**Pause** / **Resume** / **Stop** control the show; **Reset scene** clears state.",
+            elem_classes=["theater-hero"],
         )
 
-        tabs = gr.Tabs(selected=0)
+        tabs = gr.Tabs(selected=0, elem_classes=["theater-tabs"])
         with tabs:
             with gr.Tab("Backstage (Setup)"):
-                gr.Markdown("### Scene setup")
-                env = gr.Dropdown(env_choices, value="Garden", label="Environment")
-                topic = gr.Textbox(label="Global topic", lines=2, value="A missing invitation")
+                with gr.Column(elem_classes=["theater-card"]):
+                    gr.Markdown("### Scene setup")
+                    env = gr.Dropdown(env_choices, value="Garden", label="Environment")
+                    topic = gr.Textbox(label="Global topic", lines=2, value="A missing invitation")
 
-                gr.Markdown("### Character configuration — three columns")
-                with gr.Row():
-                    with gr.Column():
-                        gr.Markdown("**Actor 1**")
-                        a1_avatar = gr.Dropdown(avatars_choices, value="🎭", label="Avatar")
-                        a1_goal = gr.Textbox(label="Goal", value="Host the perfect garden party")
-                        a1_secret = gr.Textbox(label="Secret", value="Forgot to send half the invites")
-                        a1_tone = gr.Dropdown(tone_choices, value=tone_choices[0], label="Tone / style")
-                    with gr.Column():
-                        gr.Markdown("**Actor 2**")
-                        a2_avatar = gr.Dropdown(avatars_choices, value="🦊", label="Avatar")
-                        a2_goal = gr.Textbox(label="Goal", value="Keep everyone calm")
-                        a2_secret = gr.Textbox(label="Secret", value="Knows the caterer canceled")
-                        a2_tone = gr.Dropdown(tone_choices, value=tone_choices[1], label="Tone / style")
-                    with gr.Column():
-                        gr.Markdown("**Actor 3**")
-                        a3_avatar = gr.Dropdown(avatars_choices, value="🤖", label="Avatar")
-                        a3_goal = gr.Textbox(label="Goal", value="Log outcomes objectively")
-                        a3_secret = gr.Textbox(label="Secret", value="Was told to spin the report")
-                        a3_tone = gr.Dropdown(tone_choices, value=tone_choices[2], label="Tone / style")
+                with gr.Column(elem_classes=["theater-card"]):
+                    gr.Markdown("### Character configuration")
+                    with gr.Row():
+                        with gr.Column():
+                            gr.Markdown("**Actor 1**")
+                            a1_avatar = gr.Dropdown(avatars_choices, value="🎭", label="Avatar")
+                            a1_goal = gr.Textbox(label="Goal", value="Host the perfect garden party")
+                            a1_secret = gr.Textbox(label="Secret", value="Forgot to send half the invites")
+                            a1_tone = gr.Dropdown(tone_choices, value=tone_choices[0], label="Tone / style")
+                        with gr.Column():
+                            gr.Markdown("**Actor 2**")
+                            a2_avatar = gr.Dropdown(avatars_choices, value="🦊", label="Avatar")
+                            a2_goal = gr.Textbox(label="Goal", value="Keep everyone calm")
+                            a2_secret = gr.Textbox(label="Secret", value="Knows the caterer canceled")
+                            a2_tone = gr.Dropdown(tone_choices, value=tone_choices[1], label="Tone / style")
+                        with gr.Column():
+                            gr.Markdown("**Actor 3**")
+                            a3_avatar = gr.Dropdown(avatars_choices, value="🤖", label="Avatar")
+                            a3_goal = gr.Textbox(label="Goal", value="Log outcomes objectively")
+                            a3_secret = gr.Textbox(label="Secret", value="Was told to spin the report")
+                            a3_tone = gr.Dropdown(tone_choices, value=tone_choices[2], label="Tone / style")
 
                 with gr.Row():
                     raise_btn = gr.Button("Raise Curtain", variant="primary")
@@ -1086,21 +1176,27 @@ def build_app() -> gr.Blocks:
 
             with gr.Tab("Main Stage (Performance)"):
                 locked_md = gr.Markdown(
-                    "🔒 **The curtain is down.** Open **Backstage** and press **Raise Curtain** to unlock "
-                    "the intro animation, chime, and controls.",
+                    "🔒 **Curtain down** — open **Backstage** and press **Raise Curtain** to open the house "
+                    "and start the intro.",
+                    elem_classes=["theater-card"],
                 )
                 perf_column = gr.Column(visible=False)
                 with perf_column:
                     curtain_html = gr.HTML(value=render_curtain_html(False))
                     intro_audio = gr.Audio(
-                        label="Theater intro / live line (autoplay)",
+                        label="",
                         type="filepath",
                         format="wav",
                         autoplay=True,
                         interactive=False,
+                        visible="hidden",
+                        show_label=False,
+                        container=False,
+                        elem_classes=["theater-audio-hidden"],
                     )
-                    stage_inner = gr.Column(visible=False)
+                    stage_inner = gr.Column(visible=False, elem_classes=["theater-stage-shell"])
                     with stage_inner:
+                        gr.Markdown("### The stage")
                         stage_html = gr.HTML(
                             value=render_stage_html(
                                 ["Actor 1", "Actor 2", "Actor 3"],
@@ -1110,31 +1206,35 @@ def build_app() -> gr.Blocks:
                             ),
                         )
                         gr.Markdown(
-                            "**Dialogue** is generated with **local Ollama** when enabled (see Day 2/4). "
-                            "Run `ollama serve` and `ollama pull <model>`; uncheck for short offline lines."
+                            "**Dialogue** uses local **Ollama** when enabled. "
+                            "Uncheck for offline lines. Audio plays automatically — there is no sound bar on this page.",
+                            elem_classes=["theater-llm-hint"],
                         )
-                        with gr.Row():
-                            use_ollama_cb = gr.Checkbox(value=True, label="Use Ollama (local LLM)")
-                            ollama_model_tb = gr.Textbox(
-                                label="Ollama model",
-                                value=os.environ.get("OLLAMA_MODEL") or "llama3.2",
-                            )
-                        line_audio = gr.Audio(
-                            label="Live line (TTS — edge-tts MP3 per clause; gasp is WAV)",
-                            type="filepath",
-                            autoplay=True,
-                            interactive=False,
+                        use_ollama_cb = gr.Checkbox(value=True, label="Use Ollama (local LLM)")
+                        ollama_model_tb = gr.Textbox(
+                            label="Ollama model",
+                            value=os.environ.get("OLLAMA_MODEL") or "llama3.2",
                         )
-                        with gr.Row():
-                            play_btn = gr.Button("Play", variant="primary")
+                        with gr.Row(elem_classes=["theater-control-deck"]):
+                            play_btn = gr.Button("▶ Play", variant="primary")
                             resume_btn = gr.Button("Resume")
                             pause_btn = gr.Button("Pause")
                             stop_btn = gr.Button("Stop", variant="stop")
-                        with gr.Accordion("Behind-the-Scenes Logs", open=True):
+                        line_audio = gr.Audio(
+                            label="",
+                            type="filepath",
+                            autoplay=True,
+                            interactive=False,
+                            visible="hidden",
+                            show_label=False,
+                            container=False,
+                            elem_classes=["theater-audio-hidden"],
+                        )
+                        with gr.Accordion("Behind-the-Scenes Logs", open=False):
                             logs_box = gr.Code(
                                 label=None,
                                 language=None,
-                                lines=20,
+                                lines=16,
                                 interactive=False,
                                 value="",
                             )
