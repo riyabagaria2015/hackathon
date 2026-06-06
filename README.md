@@ -96,6 +96,17 @@ uv run python src/day5_puppet_theater.py
 
 Open **http://127.0.0.1:7862**. **Spoken clauses** use [edge-tts](https://github.com/rany2/edge-tts) (neural MP3, needs internet); optional `EDGE_TTS_VOICE`, `EDGE_TTS_VOICE_DEEP`, `EDGE_TTS_VOICE_NERVOUS`, `EDGE_TTS_VOICE_ROBOT`. Also: `OLLAMA_HOST`, `OLLAMA_MODEL`, and `pip install huggingface_hub` for `InferenceClient`.
 
+## The Runaway Puppet Show — Thousand Token Wood (hackathon build)
+
+Single-page **Gradio** app: four AI puppets (Sock Dragon, Sir Croaksalot, Gerald, Mistleaf), **Start Show** beats with JSON dialogue from **Ollama** (structured) or **HF Inference** (`HF_TOKEN`), **Throw object** / **Change reality** / **Summon puppet** (audience queue), **chaos meter** (0–100 with prompt bands), **tiny shared memories** (last few lines per puppet), **secrets** accordion, **shareable replay** JSON, and **End show & remember** to stash one-liners for the chaos-100 “previous performances” bit.
+
+```bash
+ollama serve && ollama pull llama3.2   # optional; uncheck Use Ollama for HF-only / mock
+uv run python src/runaway_puppet_show.py
+```
+
+Open **http://127.0.0.1:7863** (or the URL shown in the terminal). **Hugging Face Space:** set repository secrets **`HF_TOKEN`** (Inference API) for small-model text + optional image portraits (`HF_IMAGE_MODEL`, `HF_LLM_MODEL`). Spaces set **`PORT`** automatically — the app listens on `0.0.0.0` when **`SPACE_ID`** is present.
+
 ## Other
 
 ```bash

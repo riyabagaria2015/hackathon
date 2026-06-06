@@ -1,12 +1,13 @@
 [project]
 name = "hackathon"
 version = "0.1.0"
-description = "Hackathon: Days 1–5 — asyncio, Ollama+Pydantic, Gradio streaming, Director table read, puppet theater."
+description = "Hackathon: Days 1–5 + Runaway Puppet Show — asyncio, Ollama+Pydantic, Gradio, puppet theater."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "edge-tts>=7",
     "gradio>=6",
+    "huggingface_hub>=0.26",
     "ollama>=0.6.2",
     "pydantic>=2.13.4",
 ]
