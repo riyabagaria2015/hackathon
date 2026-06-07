@@ -107,6 +107,20 @@ uv run python src/runaway_puppet_show.py
 
 Open **http://127.0.0.1:7863** (or the URL shown in the terminal). **Hugging Face Space:** set repository secrets **`HF_TOKEN`** (Inference API) for small-model text + optional image portraits (`HF_IMAGE_MODEL`, `HF_LLM_MODEL`). Spaces set **`PORT`** automatically — the app listens on `0.0.0.0` when **`SPACE_ID`** is present.
 
+## Animated Puppet Theater — Ollama + TTS stage
+
+A stage-first copy of the Fastrack animated puppet demo. It includes animated puppet cards, audience actions, actor interruption policy, simple tool calls, text-to-speech, and optional local **Ollama** generation for actor lines. The supporting modules are copied into `src/` so this repo can run it without importing from the learning-lab repo.
+
+```bash
+ollama serve                  # in another terminal
+ollama pull llama3.2          # or set OLLAMA_MODEL to another local model
+uv run python src/animated_puppet_ollama.py
+```
+
+Open **http://127.0.0.1:7864** or the URL printed by Gradio. If Ollama is unavailable, the app falls back to deterministic dialogue; `edge-tts` is used for real MP3 voices when available, with generated WAV fallback audio when TTS fails.
+
+For Hugging Face Spaces, the app listens on `0.0.0.0` when `SPACE_ID` is present and uses the platform-provided `PORT`.
+
 ## Other
 
 ```bash
